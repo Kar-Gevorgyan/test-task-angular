@@ -10,6 +10,7 @@ import {LoginComponent} from './components/login/login.component';
 import {SignUpComponent} from './components/sign-up/sign-up.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import {HomeComponent} from './components/home/home.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    StoreModule,
+    // StoreModule.forRoot({}, {})
   ],
   providers: [],
   bootstrap: [AppComponent]
