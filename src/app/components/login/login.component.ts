@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Store} from "@ngrx/store";
+import * as AuthActions from '../../state/auth/auth.actions'
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
     return this.loginFormGroup.get('password') as FormGroup;
   }
   constructor(
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private store: Store
   ) {
     this.loginFormGroup = this.initFormGroup();
   }
@@ -35,5 +38,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loginFormGroup.markAllAsTouched()
+    if(this.loginFormGroup.valid) {
+      this.store.dispatch(AuthActions.loginRequest(this.loginFormGroup.value))
+    }
   }
 }

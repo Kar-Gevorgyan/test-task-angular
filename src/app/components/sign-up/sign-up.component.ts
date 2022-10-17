@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import * as AuthActions from "../../state/auth/auth.actions";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-sign-up',
@@ -26,7 +28,8 @@ export class SignUpComponent implements OnInit {
     return this.signUpFormGroup.get('password') as FormGroup;
   }
   constructor(
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private store: Store
   ) {
     this.signUpFormGroup = this.initFormGroup();
   }
@@ -45,5 +48,8 @@ export class SignUpComponent implements OnInit {
 
   signUp() {
     this.signUpFormGroup.markAllAsTouched()
+    if(this.signUpFormGroup.valid) {
+      this.store.dispatch(AuthActions.signUpRequest(this.signUpFormGroup.value))
+    }
   }
 }

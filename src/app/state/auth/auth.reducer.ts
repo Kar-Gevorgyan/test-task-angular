@@ -1,37 +1,53 @@
 import {IUser} from "../../interfaces/user.interface";
-import {Action, createReducer, on} from "@ngrx/store";
-import {loginFailure, loginSuccess} from "./auth.actions";
+import {loginFailure, loginSuccess, logout, signUpFailure, signUpSuccess} from "./auth.actions";
+import {Action, createFeatureSelector, createReducer, createSelector, on} from "@ngrx/store";
 
 export interface State {
-  token: string | null,
-  user: IUser | null,
-  loginError?: string
+  user: IUser | null
 }
 
 export const initialState: State = {
-  token: null,
-  user: null
+  user: localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : null
 }
 
-const _authReducer = createReducer(
+export const _authReducer = createReducer(
   initialState,
-  on(loginSuccess, (state, loginSuccessResponse) => {
+  on(signUpSuccess, (state, {signUpSuccessResponse}) => {
     return {
       ...state,
-      token: loginSuccessResponse.token,
-      user: loginSuccessResponse.user
+      user: signUpSuccessResponse.user
     }
   }),
-  on(loginFailure, (state, {error}) => {
+  on(signUpFailure, (state, error) => {
     return {
       ...state,
-      loginError: error,
-      token: null,
       user: null
     }
   }),
-)
+  on(loginSuccess, (state, {loginSuccessResponse}) => {
+    return {
+      ...state,
+      user: loginSuccessResponse.user
+    }
+  }),
+  on(loginFailure, (state, error) => {
+    return {
+      ...state,
+      user: null
+    }
+  }),
+  on(logout, () => {
+    return initialState
+  })
+);
 
 export function authReducer(state: State | undefined, action: Action) {
   return _authReducer(state, action)
 }
+
+export const selectAuthState = createFeatureSelector<State>('auth')
+
+export const selectUser = createSelector(selectAuthState, state => {
+  return state.user
+})
+

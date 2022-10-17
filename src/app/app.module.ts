@@ -10,7 +10,11 @@ import {LoginComponent} from './components/login/login.component';
 import {SignUpComponent} from './components/sign-up/sign-up.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
-import { StoreModule } from '@ngrx/store';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from "./state/auth/auth.effects";
+import {authReducer} from "./state/auth/auth.reducer";
+import {AuthService} from "./services/auth.service";
 
 @NgModule({
   declarations: [
@@ -25,10 +29,11 @@ import { StoreModule } from '@ngrx/store';
     AppRoutingModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    StoreModule,
-    // StoreModule.forRoot({}, {})
+    StoreModule.forRoot({auth: authReducer}, {}),
+    EffectsModule.forRoot([AuthEffects]),
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

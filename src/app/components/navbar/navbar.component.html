@@ -9,7 +9,7 @@
       </button>
     </div>
     <div [ngClass]="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
-      <ul class="flex flex-col lg:flex-row list-none ml-auto">
+      <ul *ngIf="!(user$ | async), else loggedIn" class="flex flex-col lg:flex-row list-none ml-auto">
         <li class="nav-item">
           <a class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75" routerLink="/login">
             <span class="ml-2">Login</span>
@@ -21,6 +21,20 @@
           </a>
         </li>
       </ul>
+      <ng-template #loggedIn>
+        <ul class="flex flex-col lg:flex-row list-none ml-auto">
+          <li class="nav-item">
+            <button class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 pointer">
+              <span class="ml-2">Hi {{(user$ | async)?.firstname}}.</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 pointer" (click)="logout()">
+              <span class="ml-2">Logout</span>
+            </button>
+          </li>
+        </ul>
+      </ng-template>
     </div>
   </div>
 </nav>
