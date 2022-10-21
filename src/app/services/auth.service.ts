@@ -42,9 +42,4 @@ export class AuthService {
     localStorage.setItem('currentUser', JSON.stringify(credentials))
     return of({user: credentials})
   }
-
-  logout(): Observable<any> {
-    localStorage.removeItem('currentUser')
-    return of({})
-  }
 }
