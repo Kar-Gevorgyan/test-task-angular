@@ -37,8 +37,9 @@ export class AuthService {
 
       parsedUser.push(credentials)
       localStorage.setItem('users', JSON.stringify(parsedUser))
+    } else {
+      localStorage.setItem('users', JSON.stringify([credentials]))
     }
-    localStorage.setItem('users', JSON.stringify([credentials]))
     localStorage.setItem('currentUser', JSON.stringify(credentials))
     return of({user: credentials})
   }

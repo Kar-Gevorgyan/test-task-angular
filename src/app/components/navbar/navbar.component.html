@@ -1,4 +1,4 @@
-<nav class="absolute flex flex-wrap items-center justify-between px-2 py-3 bg-slate-700 w-screen">
+<nav class="absolute flex flex-wrap items-center justify-between px-2 py-3 bg-slate-700 w-full">
   <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
     <div class="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
       <a class="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white uppercase" routerLink="/">
@@ -24,12 +24,17 @@
       <ng-template #loggedIn>
         <ul class="flex flex-col lg:flex-row list-none ml-auto">
           <li class="nav-item">
-            <button class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 pointer">
-              <span class="ml-2">Hi {{(user$ | async)?.firstname}}.</span>
-            </button>
+            <span class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white ml-2">
+              Hi {{(user$ | async)?.firstname}}.
+            </span>
           </li>
           <li class="nav-item">
-            <button class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 pointer" (click)="logout()">
+            <a class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75" routerLink="/todos">
+              <span class="ml-2">Todos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <button class="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75" (click)="logout()">
               <span class="ml-2">Logout</span>
             </button>
           </li>

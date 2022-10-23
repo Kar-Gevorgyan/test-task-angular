@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
+import * as AuthActions from "./state/auth/auth.actions";
+import {Store} from "@ngrx/store";
+import * as fromAuth from "./state/auth/auth.reducer";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  @HostListener('window:close', ['$event'])
+  onClose() {
+    console.log(1);
+    this.store.dispatch(AuthActions.logout())
+  }
 
+  constructor(
+    private store: Store<fromAuth.State>,
+  ) {}
 }

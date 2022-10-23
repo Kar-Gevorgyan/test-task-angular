@@ -1,0 +1,142 @@
+<div class="pt-24 h-min-screen bg-slate-100">
+  <div class="flex items-end justify-center">
+    <div>
+      <label class="block font-medium text-slate-700">Todo Title</label>
+      <input type="text" placeholder="Todo Title"
+             class="w-96 px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-slate-600"
+             [(ngModel)]="todoTitle"
+      />
+    </div>
+    <button class="ml-4 px-6 py-2 text-white bg-slate-700 rounded-lg hover:bg-slate-800 disabled:opacity-50"
+            [disabled]="!todoTitle" (click)="addTodo()">Add Todo
+    </button>
+  </div>
+  <div class="container mx-auto px-4 sm:px-8">
+    <div class="py-8">
+      <div>
+        <h2 class="text-2xl font-semibold leading-tight">Todos</h2>
+      </div>
+      <div class="my-2 flex sm:flex-row flex-col justify-between">
+        <div class="flex flex-row mb-1 sm:mb-0" role="group">
+          <button class="bg-slate-500 hover:bg-slate-600 focus:bg-slate-800 text-slate-200 focus:text-slate-100 font-bold rounded-full w-32 mr-3">
+            All
+          </button>
+          <button class="bg-slate-500 hover:bg-slate-600 focus:bg-slate-800 text-slate-200 focus:text-slate-100 font-bold rounded-full w-32 mr-3">
+            Active
+          </button>
+          <button class="bg-slate-500 hover:bg-slate-600 focus:bg-slate-800 text-slate-200 focus:text-slate-100 font-bold rounded-full w-32 mr-3">
+            Completed
+          </button>
+        </div>
+        <div class="block relative">
+          <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
+              <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-slate-500">
+                  <path
+                    d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z">
+                  </path>
+              </svg>
+          </span>
+          <input placeholder="Search"
+                 class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-slate-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-slate-400 text-slate-700 focus:bg-white focus:placeholder-slate-600 focus:text-slate-700 focus:outline-none"/>
+        </div>
+      </div>
+      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+          <table class="min-w-full leading-normal">
+            <thead>
+            <tr>
+              <th
+                class="px-5 py-3 border-b-2 border-slate-700 bg-slate-700 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider w-1/3">
+                Todo Title
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-slate-700 bg-slate-700 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider w-1/3">
+                Created at
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-slate-700 bg-slate-700 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider w-1/6">
+                Status
+              </th>
+              <th
+                class="px-5 py-3 border-b-2 border-slate-700 bg-slate-700 text-left text-xs font-semibold text-slate-100 uppercase tracking-wider w-1/6">
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let todo of (todos$ | async)">
+              <td class="px-5 py-5 border-b border-slate-700 bg-white text-sm w-1/3">
+                <p class="text-slate-900 whitespace-no-wrap">
+                  {{ todo.todoTitle }}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-slate-700 bg-white text-sm w-1/3">
+                <p class="text-slate-900 whitespace-no-wrap">
+                  {{ todo.createdAt | date : 'medium' }}
+                </p>
+              </td>
+              <td class="px-5 py-5 border-b border-slate-700 bg-white text-sm w-1/6">
+                <span
+                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+                  [ngClass]="{'text-green-900': !todo.isCompleted, 'text-red-900': todo.isCompleted}"
+                >
+                  <span class="absolute inset-0 opacity-50 rounded-full"
+                        [ngClass]="{'bg-green-200': !todo.isCompleted, 'bg-red-200': todo.isCompleted}"
+                  ></span>
+                  <span class="relative">{{ !todo.isCompleted ? 'Active': 'Completed' }}</span>
+                </span>
+              </td>
+              <td class="px-5 py-5 border-b border-slate-700 bg-white text-sm w-1/3">
+                <button class="bg-rose-500 text-white active:bg-rose-600 font-bold text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
+                >
+                  Remove
+                </button>
+                <button *ngIf="!todo.isCompleted" class="ml-2 bg-emerald-500 text-white active:bg-emerald-600 font-bold text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
+                >
+                  Complete
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+
+<!--          <div-->
+<!--            class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">-->
+<!--                        <span class="text-xs xs:text-sm text-slate-900">-->
+<!--                            Showing 1 to 4 of 50 Entries-->
+<!--                        </span>-->
+<!--            <div class="inline-flex mt-2 xs:mt-0">-->
+<!--              <button-->
+<!--                class="text-sm bg-slate-300 hover:bg-slate-400 text-slate-800 font-semibold py-2 px-4 rounded-l">-->
+<!--                Prev-->
+<!--              </button>-->
+<!--              <button-->
+<!--                class="text-sm bg-slate-300 hover:bg-slate-400 text-slate-800 font-semibold py-2 px-4 rounded-r">-->
+<!--                Next-->
+<!--              </button>-->
+<!--            </div>-->
+
+
+<!--            <div class="relative flex items-center text-slate-700">-->
+<!--              <p class="w-1/2 mr-2">Per Page:</p>-->
+<!--              <select-->
+<!--                class="appearance-none h-full rounded border block appearance-none w-1/2 bg-white border-slate-400 text-slate-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-slate-500">-->
+<!--                <option>5</option>-->
+<!--                <option>10</option>-->
+<!--                <option>20</option>-->
+<!--              </select>-->
+<!--              <div-->
+<!--                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700">-->
+<!--                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">-->
+<!--                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>-->
+<!--                </svg>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
