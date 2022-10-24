@@ -18,7 +18,7 @@ export const _authReducer = createReducer(
       user: signUpSuccessResponse.user
     }
   }),
-  on(signUpFailure, (state, error) => {
+  on(signUpFailure, (state) => {
     return {
       ...state,
       user: null
@@ -30,14 +30,13 @@ export const _authReducer = createReducer(
       user: loginSuccessResponse.user
     }
   }),
-  on(loginFailure, (state, error) => {
+  on(loginFailure, (state) => {
     return {
       ...state,
       user: null
     }
   }),
   on(logout, (state) => {
-    localStorage.removeItem('currentUser')
     return {
       ...state,
       user: null

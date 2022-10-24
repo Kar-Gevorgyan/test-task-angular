@@ -1,14 +1,20 @@
-import {addTodoSuccess} from "./todo.actions";
+import {addTodoSuccess, completeTodoSuccess, removeTodoSuccess} from "./todo.actions";
 import {Action, createFeatureSelector, createReducer, createSelector, on} from "@ngrx/store";
 import {ITodo} from "../../interfaces/todo.interface";
+import {IUser} from "../../interfaces/user.interface";
 
 export interface State {
-  todos: ITodo[] | null;
+  todos: ITodo[] | [];
   todo: ITodo | null
 }
 
+const todos: ITodo[] = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos') || '') : [];
+const currentUser: IUser = JSON.parse(localStorage.getItem('currentUser') || '')
+
+todos.filter(todo => todo.userId === currentUser.id)
+
 export const initialState: State = {
-  todos: localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos') || '') : null,
+  todos: todos,
   todo: null
 }
 
@@ -17,7 +23,23 @@ export const _todoReducer = createReducer(
   on(addTodoSuccess, (state, {addTodoSuccessResponse}) => {
     return {
       ...state,
-      todo: addTodoSuccessResponse.todo,
+      todos: [...state.todos, addTodoSuccessResponse.todo],
+    }
+  }),
+  on(removeTodoSuccess, (state, {removeTodoSuccessResponse}) => {
+    return {
+      ...state,
+      todos: removeTodoSuccessResponse.todos
+    }
+  }),
+  on(completeTodoSuccess, (state, {completeTodoSuccessResponse}) => {
+    return {
+      ...state,
+      todos: state.todos.map(todo => {
+        if(todo.id === completeTodoSuccessResponse.todo.id)
+          return completeTodoSuccessResponse.todo
+        return todo
+      }),
     }
   })
 );

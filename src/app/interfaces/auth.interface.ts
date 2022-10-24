@@ -1,6 +1,7 @@
 import {IUser} from "./user.interface";
 
 export interface ISignUpRequest {
+  id: string;
   firstname: string,
   lastname: string,
   email: string,

@@ -6,6 +6,7 @@ import {
 } from "../interfaces/auth.interface";
 import {Observable, of, throwError} from "rxjs";
 import {IUser} from "../interfaces/user.interface";
+import * as uuid from 'uuid';
 
 export class AuthService {
 
@@ -28,6 +29,8 @@ export class AuthService {
   }
 
   signUp(credentials: ISignUpRequest): Observable<ISignUpSuccessResponse> {
+    credentials = {...credentials}
+    credentials.id = uuid.v4()
     let users = localStorage.getItem('users')
     if (users) {
       let parsedUser = JSON.parse(users)
