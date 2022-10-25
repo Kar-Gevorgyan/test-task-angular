@@ -9,7 +9,7 @@ export interface State {
 }
 
 const todos: ITodo[] = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos') || '') : [];
-const currentUser: IUser = JSON.parse(localStorage.getItem('currentUser') || '')
+const currentUser: IUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : {}
 
 todos.filter(todo => todo.userId === currentUser.id)
 
